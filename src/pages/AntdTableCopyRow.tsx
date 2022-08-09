@@ -1,10 +1,10 @@
 
 
 
-import { Button, Divider, Radio, Table } from 'antd';
+import { Button, Divider, Input, Radio, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { TableRowSelection } from 'antd/lib/table/interface';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 interface DataType {
     key: number;
@@ -12,22 +12,6 @@ interface DataType {
     age: number;
     address: string;
 }
-
-const columns: ColumnsType<DataType> = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        render: (text: string) => <a>{text}</a>,
-    },
-    {
-        title: 'Age',
-        dataIndex: 'age',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-    },
-];
 
 const data: DataType[] = [
     {
@@ -68,6 +52,40 @@ export default function AntdTableCopyRow() {
         setDataSource(data);
     }, []);
 
+
+    function editChange(e: ChangeEvent<HTMLInputElement>, type: keyof DataType, index: number) {
+        let newDataSource = [...dataSource]
+        console.log(type);
+        (newDataSource[index][type] as string) = e.target.value;
+        
+        console.log(newDataSource[index]);
+        setDataSource(newDataSource)
+    }
+
+    const columns: ColumnsType<DataType> = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            render: (text: string, record, index) => {
+                const disabled = !(selectedRowKeys as number[]).includes(record.key)
+                if(disabled) {
+                    return text;
+                } 
+                return <Input width={"2px"} readOnly={disabled} maxLength={64} onChange={e => editChange(e, "name", index)} value={text} />
+            }
+        },
+        {
+            title: 'Age',
+            dataIndex: 'age',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+        },
+    ];
+
+
+
     const rowSelection: TableRowSelection<DataType> = {
         type: 'checkbox',
         onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
@@ -79,15 +97,15 @@ export default function AntdTableCopyRow() {
 
     function copy() {
         let topIndex = 0;
-        for(const d of dataSource) {
+        for (const d of dataSource) {
             topIndex = Math.max(d.key, topIndex);
         }
         let data: DataType[] = [];
         let selectedKeys = selectedRows.map(v => v.key);
         let srdId = 0;
-        for(const d of dataSource) {
+        for (const d of dataSource) {
             data.push(d);
-            if(selectedKeys[srdId] === d.key) {
+            if (selectedKeys[srdId] === d.key) {
                 srdId += 1;
                 const newdata = Object.assign({}, d);
                 newdata.key = ++topIndex;
@@ -108,6 +126,7 @@ export default function AntdTableCopyRow() {
                 }}
                 columns={columns}
                 dataSource={dataSource}
+                
             />
         </div>
     );
