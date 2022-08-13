@@ -8,9 +8,10 @@ import AntdTableCopyRow from './pages/AntdTableCopyRow';
 function App() {
   return (
     <div className="App">
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
           <Route index element={<AntdTableCopyRow />} />
+          <Route path='/table' element={<AntdTableCopyRow />} />
       </Routes>
     </BrowserRouter>
     </div>
