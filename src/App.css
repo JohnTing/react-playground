@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+.ant-table-tbody > tr.ant-table-row-selected > td {
+  background: #fafafa;
+  border-color: rgba(0, 0, 0, 0.03);
+}
+.ant-table-tbody > tr.ant-table-row-selected:hover > td {
+  background: #fafafa;
+}
+
+.ant-table-tbody > tr.johnting-selected > td {
+  background: #eeff00;
+  border-color: rgba(0, 0, 0, 0.03);
+}
+.ant-table-tbody > tr.johnting-selected:hover > td {
+  background: #ce1f1f;
+}
+

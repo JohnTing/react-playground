@@ -48,6 +48,8 @@ export default function AntdTableCopyRow() {
     const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
     const [dataSource, setDataSource] = useState<DataType[]>([]);
 
+    const [selectedColorRow, setSelectedColorRow] = useState<React.Key | null>(null);
+
     useEffect(() => {
         setDataSource(data);
     }, []);
@@ -72,15 +74,18 @@ export default function AntdTableCopyRow() {
                     return text;
                 } 
                 return <Input width={"2px"} readOnly={disabled} maxLength={64} onChange={e => editChange(e, "name", index)} value={text} />
-            }
+            },
+            align: "right" 
         },
         {
             title: 'Age',
             dataIndex: 'age',
+            align: "right" 
         },
         {
             title: 'Address',
             dataIndex: 'address',
+            align: "right" 
         },
     ];
 
@@ -126,7 +131,15 @@ export default function AntdTableCopyRow() {
                 }}
                 columns={columns}
                 dataSource={dataSource}
-                
+
+                rowClassName={(record, index) => record.key === selectedColorRow ? "johnting-row-selected" : ""}
+
+
+                onRow={(record, rowIndex) => {
+                    return {
+                      onClick: event => {setSelectedColorRow(record.key);}, // click row
+                    };
+                  }}
             />
         </div>
     );
