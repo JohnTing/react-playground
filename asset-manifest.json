@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react-emergency-report-public/static/css/main.e629c5ac.css",
-    "main.js": "/react-emergency-report-public/static/js/main.6847b49a.js",
-    "static/js/787.4880d76a.chunk.js": "/react-emergency-report-public/static/js/787.4880d76a.chunk.js",
-    "index.html": "/react-emergency-report-public/index.html",
-    "main.e629c5ac.css.map": "/react-emergency-report-public/static/css/main.e629c5ac.css.map",
-    "main.6847b49a.js.map": "/react-emergency-report-public/static/js/main.6847b49a.js.map",
-    "787.4880d76a.chunk.js.map": "/react-emergency-report-public/static/js/787.4880d76a.chunk.js.map"
+    "main.css": "/react-playground/static/css/main.e629c5ac.css",
+    "main.js": "/react-playground/static/js/main.1616bc0d.js",
+    "static/js/787.4880d76a.chunk.js": "/react-playground/static/js/787.4880d76a.chunk.js",
+    "index.html": "/react-playground/index.html",
+    "main.e629c5ac.css.map": "/react-playground/static/css/main.e629c5ac.css.map",
+    "main.1616bc0d.js.map": "/react-playground/static/js/main.1616bc0d.js.map",
+    "787.4880d76a.chunk.js.map": "/react-playground/static/js/787.4880d76a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e629c5ac.css",
-    "static/js/main.6847b49a.js"
+    "static/js/main.1616bc0d.js"
   ]
 }
