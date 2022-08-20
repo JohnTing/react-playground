@@ -61,7 +61,7 @@ export default function AntdTableCopyRow(props: PropType) {
         let newDataSource = [...dataSource]
         console.log(type);
         (newDataSource[index][type] as string) = e.target.value;
-        
+
         console.log(newDataSource[index]);
         setDataSource(newDataSource);
         props.onChange(newDataSource);
@@ -73,22 +73,22 @@ export default function AntdTableCopyRow(props: PropType) {
             dataIndex: 'name',
             render: (text: string, record, index) => {
                 const disabled = !(selectedRowKeys as number[]).includes(record.key)
-                if(disabled) {
+                if (disabled) {
                     return text;
-                } 
-                return <Input width={"2px"} readOnly={disabled} maxLength={64} onChange={e => editChange(e, "name", index)} value={text} />
+                }
+                return <input readOnly={disabled} onChange={e => editChange(e, "name", index)} value={text} />
             },
-            align: "right" 
+            width: "240px"
         },
         {
             title: 'Age',
             dataIndex: 'age',
-            align: "right" 
+            align: "right"
         },
         {
             title: 'Address',
             dataIndex: 'address',
-            align: "right" 
+            align: "right"
         },
     ];
 
@@ -140,9 +140,9 @@ export default function AntdTableCopyRow(props: PropType) {
 
                 onRow={(record, rowIndex) => {
                     return {
-                      onClick: event => {setSelectedColorRow(record.key);}, // click row
+                        onClick: event => { setSelectedColorRow(record.key); }, // click row
                     };
-                  }}
+                }}
             />
         </div>
     );
