@@ -42,8 +42,10 @@ const data: DataType[] = [
 
 // rowSelection object indicates the need for row selection
 
+type PropType = {dataSource:DataType[], onChange: (dataSource:DataType[]) => void}
 
-export default function AntdTableCopyRow() {
+
+export default function AntdTableCopyRow(props: PropType) {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
     const [dataSource, setDataSource] = useState<DataType[]>([]);
@@ -51,7 +53,7 @@ export default function AntdTableCopyRow() {
     const [selectedColorRow, setSelectedColorRow] = useState<React.Key | null>(null);
 
     useEffect(() => {
-        setDataSource(data);
+        setDataSource(props.dataSource);
     }, []);
 
 
@@ -61,7 +63,8 @@ export default function AntdTableCopyRow() {
         (newDataSource[index][type] as string) = e.target.value;
         
         console.log(newDataSource[index]);
-        setDataSource(newDataSource)
+        setDataSource(newDataSource);
+        props.onChange(newDataSource);
     }
 
     const columns: ColumnsType<DataType> = [
