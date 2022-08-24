@@ -1,8 +1,29 @@
 import { Button, Modal } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import AntdTableCopyRow from '../compoments/AntdTableCopyRow';
+
+
+interface DataType {
+  key: number;
+  name: string;
+  age: number;
+  address: string;
+}
+
+
 
 export default function Pages() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
+
+  useEffect(() => {
+    fetch(process.env.PUBLIC_URL + '/data.json', {method: 'GET'})
+    .then((value) => value.json())
+    .then((data : DataType[]) => {
+      console.log(data);
+      setDataSource(data);
+    });
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -22,9 +43,7 @@ export default function Pages() {
         Open Modal
       </Button>
       <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <AntdTableCopyRow dataSource={dataSource}/>
       </Modal>
     </>
   );

@@ -3,15 +3,16 @@ import logo from './logo.svg';
 import 'antd/dist/antd.css';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AntdTableCopyRow from './compoments/AntdTableCopyRow';
+import Page2 from './pages/Page2';
+
 
 function App() {
   return (
     <div className="App">
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
-          <Route index element={<AntdTableCopyRow />} />
-          <Route path='/table' element={<AntdTableCopyRow />} />
+          <Route index element={<Page2 />} />
+          <Route path='/page2' element={<Page2 />} />
       </Routes>
     </BrowserRouter>
     </div>
