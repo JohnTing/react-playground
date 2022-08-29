@@ -24,6 +24,9 @@ export default function AntdTableCopyRow(props: PropType) {
 
     const [selectedColorRow, setSelectedColorRow] = useState<React.Key | null>(null);
 
+    const [isLoading, setIsLoading] = useState(false);
+
+
     useEffect(() => {
         setDataSource(props.dataSource);
     }, []);
@@ -102,6 +105,13 @@ export default function AntdTableCopyRow(props: PropType) {
         <div>
             <Button onClick={copy}>Copy</Button>
             <Table
+                loading={isLoading}
+                pagination={{
+                    onChange(page, pageSize) {
+                        setIsLoading(true);
+                        setTimeout(function(){ setIsLoading(false); }, 2000);
+                    },
+                }}
                 rowSelection={{
                     selectedRowKeys,
                     ...rowSelection,

@@ -21,6 +21,11 @@ export default function Pages() {
     .then((value) => value.json())
     .then((data : DataType[]) => {
       console.log(data);
+
+      data.forEach((v, i, a) => {
+        v.key = i;
+      });
+
       setDataSource(data);
     });
   }, []);
