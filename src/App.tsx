@@ -50,8 +50,6 @@ const  initDatacolumns =
     ["name", "age", "line", "address"],
   ];
 
-
-
 function App() {
 
   // 切換表格
