@@ -1,7 +1,7 @@
 import { ColumnType, ColumnsType } from 'antd/lib/table';
 import './App.css';
 import { Button, Table } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 type DataSource = {
@@ -63,6 +63,24 @@ function App() {
 
   // 資料
   const [dataSource, setDataSource] = useState<DataSource[]>(initDataSource);
+  const [dataColumns, setDataColumns] = useState<ColumnsType<DataSource>[]>([]);
+  
+
+  useEffect(() => {
+
+    // 儲存多表格，Columns 是多欄位組成的表格，Column 是欄位，就差個 s 
+    const columnsList: ColumnsType<DataSource>[] = [];
+    columnsTitleData.forEach(titles => {
+      let newColumns: ColumnType<DataSource>[] = [];
+  
+      titles.forEach(e => {
+        newColumns.push(createNewColumn(e));
+      })
+      columnsList.push(newColumns)
+    });
+  
+    setDataColumns(columnsList);
+  }, [selectedCellIndex, selectedColumnName]);
 
   // 模擬 api 讀取資料
   async function readData() {
@@ -71,8 +89,11 @@ function App() {
     setDataSource([...dataSource, ...json]);
   }
 
-  // 儲存多表格，Columns 是多欄位組成的表格，Column 是欄位，就差個 s 
-  const columnsList: ColumnsType<DataSource>[] = [];
+  function checkColor(rowIndex: number, name: string) {
+    //console.log(selectedCellIndex);
+    console.log(selectedColumnName);
+    return (selectedCellIndex === rowIndex  && selectedColumnName === name) ? "#00ccc7" : "#00f7be";
+  }
 
   function createNewColumn(name: string) {
     let newColumn: ColumnType<DataSource> = {
@@ -80,22 +101,28 @@ function App() {
       dataIndex: name,
       key: name,
       onCell: (record, rowIndex) => {
+        console.log("onCell");
         return {
-
           onClick: (event) => {
-            console.log(rowIndex);
             // 紀錄行數
             setSelectedCellIndex(rowIndex === undefined ? -1 : rowIndex);
             // 紀錄列名，例如對應 title
             // 我這裡 title, dataIndex, key 都一樣所以無所謂，但實際使用時要確認之後判斷時要用哪個參數作為"列名"來判斷
             setSelectedColumnName(name);
+            //console.log(rowIndex);
+            console.log(name);
           },
+          style: {background: checkColor(rowIndex === undefined ? -1 : rowIndex, name )},
+          
         };
       },
 
+      
+
+      
       render(text, record, rowIndex) {
-        // console.log("rowIndex=" + rowIndex);
-        // console.log("selectedCellIndex=" + selectedCellIndex);
+        console.log("selectedColumnName=" + selectedColumnName);
+        console.log("selectedCellIndex=" + selectedCellIndex);
         return {
           props: {
             style: {
@@ -105,29 +132,20 @@ function App() {
           },
           children: <div>{text}</div>
         };
+        
       }
     }
     return newColumn;
   }
-
-  columnsTitleData.forEach(titles => {
-    let newColumns: ColumnType<DataSource>[] = [];
-
-    titles.forEach(e => {
-      newColumns.push(createNewColumn(e));
-    })
-    columnsList.push(newColumns)
-  });
-
 
   return (
     <div className="App">
       <header className="App-header">
         <Button onClick={readData} >fetch</Button>
         
-        <Button onClick={() => { setCid((cid + 1) % columnsList.length) }} >switch</Button>
+        <Button onClick={() => { setCid((cid + 1) % dataColumns.length) }} >switch</Button>
 
-        <Table dataSource={dataSource} columns={columnsList[cid]} pagination={false} />
+        <Table dataSource={dataSource} columns={dataColumns[cid]} pagination={false} />
       </header>
     </div>
   );
