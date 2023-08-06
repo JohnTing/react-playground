@@ -44,7 +44,7 @@ const initDataSource: DataSource[] = [
   }
 ];
 
-const columnsTitleData =
+const  initDatacolumns =
   [
     ["name", "codeName", "line"],
     ["name", "age", "line", "address"],
@@ -62,37 +62,35 @@ function App() {
   const [selectedColumnName, setSelectedColumnName] = useState<string>("");
 
   // 資料
-  const [dataSource, setDataSource] = useState<DataSource[]>(initDataSource);
-  const [dataColumns, setDataColumns] = useState<ColumnsType<DataSource>[]>([]);
+  const [dataSource, setDataSource] = useState<DataSource[]>([]);
+  const [dataColumns, setDataColumns] = useState<string[][]>([]);
+
+  const [showColumns, setShowColumns] = useState<ColumnsType<DataSource>[]>([]);
   
+  useEffect(() => {
+    setDataColumns(initDatacolumns);
+    setDataSource(initDataSource);
+  }, []);
 
   useEffect(() => {
-
     // 儲存多表格，Columns 是多欄位組成的表格，Column 是欄位，就差個 s 
     const columnsList: ColumnsType<DataSource>[] = [];
-    columnsTitleData.forEach(titles => {
+    dataColumns.forEach(titles => {
       let newColumns: ColumnType<DataSource>[] = [];
-  
       titles.forEach(e => {
         newColumns.push(createNewColumn(e));
       })
       columnsList.push(newColumns)
     });
   
-    setDataColumns(columnsList);
-  }, [selectedCellIndex, selectedColumnName]);
+    setShowColumns(columnsList);
+  }, [dataColumns, selectedCellIndex, selectedColumnName]);
 
   // 模擬 api 讀取資料
   async function readData() {
     const value = await fetch("/react-playground/data.json");
     const json: DataSource[] = await value.json();
     setDataSource([...dataSource, ...json]);
-  }
-
-  function checkColor(rowIndex: number, name: string) {
-    //console.log(selectedCellIndex);
-    console.log(selectedColumnName);
-    return (selectedCellIndex === rowIndex  && selectedColumnName === name) ? "#00ccc7" : "#00f7be";
   }
 
   function createNewColumn(name: string) {
@@ -110,28 +108,12 @@ function App() {
             // 我這裡 title, dataIndex, key 都一樣所以無所謂，但實際使用時要確認之後判斷時要用哪個參數作為"列名"來判斷
             setSelectedColumnName(name);
             //console.log(rowIndex);
-            console.log(name);
+            //console.log(name);
           },
-          style: {background: checkColor(rowIndex === undefined ? -1 : rowIndex, name )},
+          style: {background:  (selectedCellIndex === rowIndex  && selectedColumnName === name) ? "#00ccc7" : "#00f7be" },
           
         };
       },
-
-      /*
-      render(text, record, rowIndex) {
-        console.log("selectedColumnName=" + selectedColumnName);
-        console.log("selectedCellIndex=" + selectedCellIndex);
-        return {
-          props: {
-            style: {
-              // 判斷行數和列名一致，給予不同背景顏色
-              background: (rowIndex === selectedCellIndex && selectedColumnName === name) ? "#00ccc7" : "#00f7be"
-            }
-          },
-          children: <div>{text}</div>
-        };
-        
-      }*/
     }
     return newColumn;
   }
@@ -141,9 +123,9 @@ function App() {
       <header className="App-header">
         <Button onClick={readData} >fetch</Button>
         
-        <Button onClick={() => { setCid((cid + 1) % dataColumns.length) }} >switch</Button>
+        <Button onClick={() => { setCid((cid + 1) % showColumns.length) }} >switch</Button>
 
-        <Table dataSource={dataSource} columns={dataColumns[cid]} pagination={false} />
+        <Table dataSource={dataSource} columns={showColumns[cid]} pagination={false} />
       </header>
     </div>
   );
