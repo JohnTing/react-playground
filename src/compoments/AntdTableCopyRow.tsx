@@ -13,37 +13,9 @@ interface DataType {
     address: string;
 }
 
-const data: DataType[] = [
-    {
-        key: 1,
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: 2,
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: 3,
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-    {
-        key: 4,
-        name: 'Disabled User',
-        age: 99,
-        address: 'Sidney No. 1 Lake Park',
-    },
-];
-
 // rowSelection object indicates the need for row selection
 
-type PropType = {dataSource:DataType[], onChange: (dataSource:DataType[]) => void}
-
+type PropType = {dataSource:DataType[], onChange?: (dataSource:DataType[]) => void}
 
 export default function AntdTableCopyRow(props: PropType) {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -51,6 +23,9 @@ export default function AntdTableCopyRow(props: PropType) {
     const [dataSource, setDataSource] = useState<DataType[]>([]);
 
     const [selectedColorRow, setSelectedColorRow] = useState<React.Key | null>(null);
+
+    const [isLoading, setIsLoading] = useState(false);
+
 
     useEffect(() => {
         setDataSource(props.dataSource);
@@ -64,7 +39,9 @@ export default function AntdTableCopyRow(props: PropType) {
 
         console.log(newDataSource[index]);
         setDataSource(newDataSource);
-        props.onChange(newDataSource);
+        if(props.onChange) {
+            props.onChange(newDataSource);
+        }
     }
 
     const columns: ColumnsType<DataType> = [
@@ -128,6 +105,13 @@ export default function AntdTableCopyRow(props: PropType) {
         <div>
             <Button onClick={copy}>Copy</Button>
             <Table
+                loading={isLoading}
+                pagination={{
+                    onChange(page, pageSize) {
+                        setIsLoading(true);
+                        setTimeout(function(){ setIsLoading(false); }, 2000);
+                    },
+                }}
                 rowSelection={{
                     selectedRowKeys,
                     ...rowSelection,

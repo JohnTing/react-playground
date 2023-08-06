@@ -63,6 +63,7 @@ function App() {
   }; 
   const [cid, setCid] = useState<number>(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState<number>(-1);
+  const [selectedColumnName, setSelectedColumnName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource[]>(initDataSource);
   
   async function readData() {
@@ -88,12 +89,9 @@ function App() {
                 onClick: (event) => {
                   console.log(rowIndex);
                   setSelectedCellIndex(rowIndex === undefined ? -1 : rowIndex );
+                  setSelectedColumnName(e);
                 },
-                
-                // style:{background: "red"},
-                // style:() => {{background: "red"}},
             };
-            
           },
           render(text, record, rowIndex) {
             // code here
@@ -101,7 +99,8 @@ function App() {
             console.log("selectedCellIndex=" + selectedCellIndex);
             return {
               props: {
-                style: { background: rowIndex === selectedCellIndex ? "#00ccc7" : "#00f7be" }
+                style: { 
+                  background: (rowIndex === selectedCellIndex && selectedColumnName === e) ? "#00ccc7" : "#00f7be" }
               },
               children: <div>{text}</div>
             };
@@ -109,54 +108,10 @@ function App() {
         }, 
       )
     })
-
     columnList.push(newColumn)
-    
   });
 
-  const columns: ColumnsType<DataSource> = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    }, 
-    {
-      title: 'Code name',
-      dataIndex: 'codeName',
-      key:'codeName'
-    },
-    {
-      title: 'Lines',
-      dataIndex: 'line',
-      key: 'line',
-
-      onCell: (record, rowIndex) => {
-        return {
-          
-            onClick: (event) => {
-              console.log(rowIndex);
-              setSelectedCellIndex(rowIndex === undefined ? -1 : rowIndex );
-            },
-            
-            // style:{background: "red"},
-            // style:() => {{background: "red"}},
-        };
-        
-      },
-      render(text, record, rowIndex) {
-        // code here
-        console.log("rowIndex=" + rowIndex);
-        console.log("selectedCellIndex=" + selectedCellIndex);
-        return {
-          props: {
-            style: { background: rowIndex === selectedCellIndex ? "#00ccc7" : "#00f7be" }
-          },
-          children: <div>{text}</div>
-        };
-      }
-    }  
     
-  ];  
   return (
     <div className="App">
       <header className="App-header">
