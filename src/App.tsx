@@ -84,7 +84,7 @@ function App() {
 
   // 模擬 api 讀取資料
   async function readData() {
-    const value = await fetch("http://localhost:3000/react-playground/data.json");
+    const value = await fetch("react-playground/data.json");
     const json: DataSource[] = await value.json();
     setDataSource([...dataSource, ...json]);
   }
