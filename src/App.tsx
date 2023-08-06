@@ -117,9 +117,7 @@ function App() {
         };
       },
 
-      
-
-      
+      /*
       render(text, record, rowIndex) {
         console.log("selectedColumnName=" + selectedColumnName);
         console.log("selectedCellIndex=" + selectedCellIndex);
@@ -133,7 +131,7 @@ function App() {
           children: <div>{text}</div>
         };
         
-      }
+      }*/
     }
     return newColumn;
   }
